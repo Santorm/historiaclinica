@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="carrousel_position">
-      <div class="carrousel_box">
+      <div class="carrousel_box" :style="{left : 360-sliderPositionX + 'px', width : totalCarrouselWidth + 'px' }">
         <div class="picture_box" v-for="(pic, index) in dataphoto" :key="pic.id_foto" :style="{backgroundImage: 'url(/static/api/'+pic.ruta+')', width: 150 * pic.width / pic.height + 'px'}">
         </div>
 
       </div>
     </div>
-    <div class="slider" @mousedown="eventMouseDown" @mouseup="eventMouseUp" @mousemove="eventMouseMove">
+    <div class="slider" id="sliderbox" :style = "{width : sliderWidth}" @mousedown="eventMouseDown" @mouseup="eventMouseUp" @mousemove="eventMouseMove" @mouseout="eventMouseOut, false">
 
       <!-- <input v-model = "valueslide" @change = "funconinput" type="range" min="1" max="100"  class="slider" id="myRange"> -->
 
-      <div class="slider_move" id="myRange" :style ="{left : sliderPositionX +'px'}"></div>
+      <div class="slider_move" id="myRange" :style ="{left : sliderPositionX + 'px', width : sliderWidth + 'px' }"></div>
     </div>
     <!-- <button @click = "goright">Derecha</button> -->
     <!-- <button>Izqui</button> -->
@@ -31,7 +31,10 @@ export default {
       // pacienteActivo: {},
       mouseDownEventOn: false,
       sliderPositionX: 360,
+      sliderBoxWidth: '',
+      sliderWidth: '',
       valueslide: 0,
+      totalCarrouselWidth: 0,
       urlQueryPhotos: '/static/api/queryphotos.php',
       // picwidth:[
       // ],
@@ -45,6 +48,10 @@ export default {
     },
     eventMouseUp: function(event) {
       this.mouseDownEventOn = false;
+    },
+    eventMouseOut: function(event) {
+      this.mouseDownEventOn = false;
+      console.log("mouseout");
     },
     eventMouseMove: function(event) {
 
@@ -115,7 +122,20 @@ export default {
 
        var loadedPhoto = foto.onload;
        loadedPhoto();
+        
+      // console.log(i, self.dataphoto[i]["width"])
+       this.totalCarrouselWidth += self.dataphoto[i]['width'];
+      
       }
+
+      this.sliderBoxWidth = document.getElementById("sliderbox").offsetWidth;
+
+      this.sliderWidth = this. sliderBoxWidth*(this.sliderBoxWidth/this.totalCarrouselWidth);
+      
+
+
+
+
 
       // TODO: No se carga las imagenes, hay que vlver a crgar para que aparezcan 
       
@@ -153,7 +173,6 @@ export default {
 .carrousel_box {
   position: absolute;
   overflow: hidden;
-  width: 100%;
   margin: 0 auto;
   height: 150px;
   border-radius: 5px;
