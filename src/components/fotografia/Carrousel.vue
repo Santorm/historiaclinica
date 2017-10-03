@@ -7,11 +7,11 @@
 
       </div>
     </div>
-    <div class="slider">
+    <div class="slider" @mousedown="eventMouseDown" @mouseup="eventMouseUp" @mousemove="eventMouseMove">
 
       <!-- <input v-model = "valueslide" @change = "funconinput" type="range" min="1" max="100"  class="slider" id="myRange"> -->
 
-      <div class="slider_move" id="myRange" draggable="true" @mousedown="funconinput"></div>
+      <div class="slider_move" id="myRange" :style ="{left : sliderPositionX +'px'}"></div>
     </div>
     <!-- <button @click = "goright">Derecha</button> -->
     <!-- <button>Izqui</button> -->
@@ -29,6 +29,8 @@ export default {
   data() {
     return {
       // pacienteActivo: {},
+      mouseDownEventOn: false,
+      sliderPositionX: 360,
       valueslide: 0,
       urlQueryPhotos: '/static/api/queryphotos.php',
       // picwidth:[
@@ -38,16 +40,23 @@ export default {
     }
   },
   methods: {
-    // goright: function(){
-    //   console.log("derecha");
-    // },
+    eventMouseDown: function(event) {
+      this.mouseDownEventOn = true;
+    },
+    eventMouseUp: function(event) {
+      this.mouseDownEventOn = false;
+    },
+    eventMouseMove: function(event) {
 
-    funconinput: function() {
-      var valslide = document.getElementById("myRange");
-      //  = valslide;
-      var csswidthtumb = window.getComputedStyle(valslide, '::-webkit-slider-thumb').getPropertyValue("width");
-      // .slider::-webkit-slider-thumb
-      // console.log("oninputeando", this.valueslide, csswidthtumb);
+      if(this.mouseDownEventOn){
+        console.log("si event mouse move")
+        this.sliderPositionX = event.clientX;
+      }
+
+      // console.log("this", this, event.this)
+      // console.log("funciona mousew", event.clientX, event.screenX)
+      // 
+  
     },
 
     queryPhotos: function() {
@@ -96,8 +105,8 @@ export default {
         var photoHeight = foto.height;
           return function (){
             // console.log("self mas adentro", self)
-            console.log(nr, foto.width, photoWidth, photoHeight)
-            console.log(self.dataphoto)
+            // console.log(nr, foto.width, photoWidth, photoHeight)
+            // console.log(self.dataphoto)
               self.dataphoto[nr]["width"] = photoWidth ;
               self.dataphoto[nr]["height"] = photoHeight;
           }
@@ -184,6 +193,8 @@ export default {
 }
 
 .slider_move {
+  position: absolute;
+  left: 360px;
   width: 25px;
   height: 25px;
   background: #4CAF50;
