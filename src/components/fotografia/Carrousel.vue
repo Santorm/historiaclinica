@@ -85,18 +85,31 @@ export default {
       var self = this;
       var foto = [];
        for (var i = 0; i < this.dataphoto.length; i++) {
+        //  console.log("self antes", self)
         
         foto = new Image();
         foto.src = "/static/api/" + this.dataphoto[i].ruta;
 
        foto.onload = (function(nr){
-
-              self.dataphoto[nr]["width"] = foto.width;
-              self.dataphoto[nr]["height"] = foto.height;
-          
+        //  console.log("self dentro", self)
+        var photoWidth = foto.width;
+        var photoHeight = foto.height;
+          return function (){
+            // console.log("self mas adentro", self)
+            console.log(nr, foto.width, photoWidth, photoHeight)
+            console.log(self.dataphoto)
+              self.dataphoto[nr]["width"] = photoWidth ;
+              self.dataphoto[nr]["height"] = photoHeight;
+          }
         
        })(i);
+
+       var loadedPhoto = foto.onload;
+       loadedPhoto();
       }
+
+      // TODO: No se carga las imagenes, hay que vlver a crgar para que aparezcan 
+      
   
       
   },
