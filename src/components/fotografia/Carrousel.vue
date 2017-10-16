@@ -98,39 +98,72 @@ export default {
     // },
 
     getPictureData: function() {
+
+      // const newphotos = [];
       var self = this;
-      var foto = [];
-       for (var i = 0; i < this.dataphoto.length; i++) {
-        //  console.log("self antes", self)
-        
-        foto = new Image();
-        foto.src = "/static/api/" + this.dataphoto[i].ruta;
+      this.dataphoto.forEach((photo) => {
+        const img = new Image();
+        img.src = "/static/api/" + photo.ruta;
+        // console.log("img", img.src)
 
-       foto.onload = (function(nr){
-        //  console.log("self dentro", self)
-        var photoWidth = foto.width;
-        var photoHeight = foto.height;
-          return function (){
-            // console.log("self mas adentro", self)
-            // console.log(nr, foto.width, photoWidth, photoHeight)
-            // console.log(self.dataphoto)
-              self.dataphoto[nr]["width"] = photoWidth ;
-              self.dataphoto[nr]["height"] = photoHeight;
-          }
-        
-       })(i);
+        img.onload = function() {
 
-       var loadedPhoto = foto.onload;
-       loadedPhoto();
-        
-      // console.log(i, self.dataphoto[i]["width"])
-       this.totalCarrouselWidth += self.dataphoto[i]['width'];
-      
+          const { width, height } = img;
+          // newphotos.push({ ...photo, width, height });
+          photo.width = img.width;
+          photo.height = img.height;
+          
+          // console.log("inside", photo, img.width)
+          var photoWidth = photo.width
+          var photoHeight = photo.height
+          afterLoaded(photoWidth, self);
+        };
+
+
+      });
+
+      function afterLoaded(photoWidth, self) {
+        self.totalCarrouselWidth += photoWidth;
+        // console.log("afuera", photoWidth);
+        self.sliderBoxWidth = document.getElementById("sliderbox").offsetWidth;
+        self.sliderWidth = self.sliderBoxWidth*(self.sliderBoxWidth/self.totalCarrouselWidth);
       }
 
-      this.sliderBoxWidth = document.getElementById("sliderbox").offsetWidth;
 
-      this.sliderWidth = this. sliderBoxWidth*(this.sliderBoxWidth/this.totalCarrouselWidth);
+      // this.dataphoto = newphotos;
+
+
+      // var self = this;
+      // var foto = [];
+      //  for (var i = 0; i < this.dataphoto.length; i++) {
+      //   //  console.log("self antes", self)
+        
+      //   foto = new Image();
+      //   foto.src = "/static/api/" + this.dataphoto[i].ruta;
+
+      //  foto.onload = (function(nr){
+      //   //  console.log("self dentro", self)
+      //   var photoWidth = foto.width;
+      //   var photoHeight = foto.height;
+      //     return function (){
+      //       // console.log("self mas adentro", self)
+      //       // console.log(nr, foto.width, photoWidth, photoHeight)
+      //       // console.log(self.dataphoto)
+      //         self.dataphoto[nr]["width"] = photoWidth ;
+      //         self.dataphoto[nr]["height"] = photoHeight;
+      //     }
+        
+      //  })(i);
+
+      //  var loadedPhoto = foto.onload;
+      //  loadedPhoto();
+        
+      // // console.log(i, self.dataphoto[i]["width"])
+      //  this.totalCarrouselWidth += self.dataphoto[i]['width'];
+      
+      // }
+
+      
       
 
 
