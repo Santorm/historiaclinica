@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="carrousel_position">
-      <div class="carrousel_box" :style="{left : 360-sliderPositionX + 'px', width : totalCarrouselWidth + 'px' }">
+      <div class="carrousel_box" ref="carrousel_box" :style="{left : (360-sliderPositionX)*proportion + 'px', width : totalCarrouselWidth + 'px'}">
         <div class="picture_box" v-for="(pic, index) in dataphoto" :key="pic.id_foto" :style="{backgroundImage: 'url(/static/api/'+pic.ruta+')', width: 150 * pic.width / pic.height + 'px'}">
         </div>
 
       </div>
     </div>
-    <div class="slider" id="sliderbox" :style = "{width : sliderWidth}" @mousedown="eventMouseDown" @mouseup="eventMouseUp" @mousemove="eventMouseMove" @mouseout="eventMouseOut, false">
+    <div class="slider" id="sliderbox" ref="sliderbox" @mousedown="eventMouseDown" @mouseup="eventMouseUp" @mousemove="eventMouseMove" @mouseout="eventMouseOut, false">
 
       <!-- <input v-model = "valueslide" @change = "funconinput" type="range" min="1" max="100"  class="slider" id="myRange"> -->
 
-      <div class="slider_move" id="myRange" :style ="{left : sliderPositionX + 'px', width : sliderWidth + 'px' }"></div>
+      <div class="slider_move" id="myRange" @mousemove="eventMouseMoveSlider" :style ="{left : sliderPositionX + 'px', width : sliderWidth + 'px' }"></div>
     </div>
     <!-- <button @click = "goright">Derecha</button> -->
     <!-- <button>Izqui</button> -->
@@ -34,6 +34,7 @@ export default {
       sliderBoxWidth: '',
       sliderWidth: '',
       valueslide: 0,
+      proportion: 0,
       totalCarrouselWidth: 0,
       urlQueryPhotos: '/static/api/queryphotos.php',
       // picwidth:[
@@ -44,21 +45,36 @@ export default {
   },
   methods: {
     eventMouseDown: function(event) {
+      
       this.mouseDownEventOn = true;
+      
     },
     eventMouseUp: function(event) {
       this.mouseDownEventOn = false;
     },
     eventMouseOut: function(event) {
       this.mouseDownEventOn = false;
-      console.log("mouseout");
+      // console.log("mouseout");
     },
-    eventMouseMove: function(event) {
 
-      if(this.mouseDownEventOn){
-        console.log("si event mouse move")
+    eventMouseMoveSlider :function(event){
+      console.log("slidemouve", event.clientX)
+    },
+    
+    eventMouseMove: function(event) {
+      console.log("clienx", event.clientX, event.screenX)
+
+      if(this.mouseDownEventOn && this.sliderPositionX < this.sliderBoxWidth - this.sliderWidth + 360){
+        // console.log("si event mouse move")
+
+        // if(this.sliderPositionX < this.sliderBoxWidth - this.sliderWidth + 360){
         this.sliderPositionX = event.clientX;
-      }
+        }else if (this.mouseDownEventOn){
+        this.mouseDownEventOn = false;
+        this.sliderPositionX = this.sliderBoxWidth - this.sliderWidth + 350
+        }
+        
+      // }
 
       // console.log("this", this, event.this)
       // console.log("funciona mousew", event.clientX, event.screenX)
@@ -116,17 +132,24 @@ export default {
           // console.log("inside", photo, img.width)
           var photoWidth = photo.width
           var photoHeight = photo.height
-          afterLoaded(photoWidth, self);
+          afterLoaded(self, photoWidth, photoHeight);
         };
 
 
       });
 
-      function afterLoaded(photoWidth, self) {
-        self.totalCarrouselWidth += photoWidth;
+      function afterLoaded(self, photoWidth, photoHeight) {
+        // console.log(photoWidth, photoHeight)
+//= self.$refs.carrousel_box.offsetWidth
+        self.totalCarrouselWidth += photoWidth/(photoHeight/self.$refs.carrousel_box.offsetHeight)
+        // self.totalCarrouselWidth = document.getElementsByClassName("carrousel_box").offsetWidth;
+        // console.log("carrousel_box", document.getElementsByClassName("carrousel_box").offsetWidth)
+        // console.log(self.totalCarrouselWidth, photoWidth)
         // console.log("afuera", photoWidth);
-        self.sliderBoxWidth = document.getElementById("sliderbox").offsetWidth;
-        self.sliderWidth = self.sliderBoxWidth*(self.sliderBoxWidth/self.totalCarrouselWidth);
+        self.sliderBoxWidth = self.$refs.sliderbox.offsetWidth;
+        self.proportion = self.totalCarrouselWidth/self.sliderBoxWidth;
+        // console.log("proporcion", proportion)
+        self.sliderWidth = (self.sliderBoxWidth*self.sliderBoxWidth)/self.totalCarrouselWidth;
       }
 
 
@@ -205,9 +228,10 @@ export default {
 
 .carrousel_box {
   position: absolute;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0 auto;
   height: 150px;
+  width: auto;
   border-radius: 5px;
   /* border: 1px solid red; */
 }
