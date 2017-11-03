@@ -17,7 +17,7 @@ foreach ($_FILES as $key) //Iteramos el arreglo de archivos
  
   if ($key['error']=='') //Si no existio ningun error, retornamos un mensaje por cada archivo subido
     {
-      $mensage .= $NombreOriginal;
+      $mensage .= '-> Archivo <b>'.$NombreOriginal.'</b> Subido correctamente. <br>';
     }
   if ($key['error']!='')//Si existio algún error retornamos un el error por cada archivo.
     {
