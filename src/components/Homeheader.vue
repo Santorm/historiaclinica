@@ -3,9 +3,11 @@
     <div class="logo">LOGOTIPO</div>
     <div class="pacientedata">
       <h1>Historia Clínica LunaPiel</h1>
-      <p>Nro Historia: {{pacienteActivo.historiaclinica_busqueda}}</p>
-      <p>Paciente: {{pacienteActivo.nombre_busqueda}} {{pacienteActivo.apellidos_busqueda}} Edad: </p>
-      {{$data}}
+      <span>Nro Historia: {{pacienteActivo.historiaclinica_busqueda}}</span><br>
+      <span>Paciente: {{pacienteActivo.nombre_busqueda}} {{pacienteActivo.apellidos_busqueda}}</span><br>
+      <span>Nacimiento: {{pacienteActivo.nacimiento}}</span><br>
+      <span>Ciudad: {{pacienteActivo.ciudad}}</span>
+      
       <!-- <router-link to="/login">
         <md-button class="btn_login md-raised md-primary">Iniciar Sesión</md-button>
       </router-link> -->

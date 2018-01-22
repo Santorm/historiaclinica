@@ -19,7 +19,7 @@
           </md-input-container>
           <md-input-container class='md-flex-100'>
             <label>Fecha de Nacimiento</label>
-            <md-input type="date" v-model='paciente.dateAge' required></md-input>
+            <md-input type="date" v-model='paciente.dateage' required></md-input>
             <span class="md-error">No se han encontrado resultados</span>
           </md-input-container>
           <md-input-container class='md-flex-100'>
@@ -41,9 +41,7 @@
         </form>
   
       </md-layout>
-  
-      <pre>{{$data | json}}</pre>
-  
+      
     </div>
   </md-layout>
 </template>
@@ -59,7 +57,7 @@ export default {
       paciente: {
         nombre: '',
         apellido: '',
-        dateAge: '',
+        dateage: '',
         telefono: '',
         email: '',
         ciudad: '',
@@ -71,12 +69,14 @@ export default {
     altapacientes: function () {
       this.$http.post(this.urlAlta, this.paciente).then(function (response) {
         console.info('bien', response);
+        alert("Se ha dado de alta correctamente l Paciente!");
         // get body data
         //this.someData = response.body;
 
       }, response => {
         // error callback
         console.log('mal', response);
+        alert("A ocurrido un error al crear un nuevo paciente! Revise los campos e intentelo más tarde");
       });
     }
   }

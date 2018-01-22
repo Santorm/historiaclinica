@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import home from '@/components/home'
 import login from '@/components/login'
 import busqueda from '@/components/busqueda'
+import datospersonales from '@/components/datospersonales'
 import panelcontrol from '@/components/panelcontrol'
 import fotografia from '@/components/fotografia'
 import altapaciente from '@/components/panelcontrol/altapaciente'
@@ -29,6 +30,11 @@ export default new Router({
           path: '/busqueda',
           name: 'busqueda',
           component: busqueda
+        },
+        {
+          path: '/datospersonales',
+          name: 'datospersonales',
+          component: datospersonales
         },
         {
           path: '/panelcontrol',

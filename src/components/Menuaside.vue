@@ -6,7 +6,7 @@
         <i class="icon fa fa-search" aria-hidden="true"></i>
       </div>
     </router-link>
-    <router-link to="/">
+    <router-link to="/datospersonales">
       <div class="btn_aside">Datos Personales
         <i class="icon material-icons">&#xE85E;</i>
       </div>

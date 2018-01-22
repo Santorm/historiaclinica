@@ -1,19 +1,18 @@
 <template>
 <div class="container">
- 
-  <div class="busqueda">
- <consulta-busqueda/>
+   <div class="datospersonales">
+aqui va un coponente del formularo de datos personales poner un formuario de vue material, o meor crear uno yo mismo y hacer que se actualice o modifique con la bbdd
   </div>
   
 </div>
 </template>
 
 <script>
-import consultaBusqueda from './busqueda/consultaBusqueda'
+//import consultaBusqueda from './busqueda/consultaBusqueda'
 export default {
-  name: 'busqueda',
+  name: 'datospersonales',
   components:{
-    consultaBusqueda
+    //consultaBusqueda
   },
   data () {
     return {
@@ -30,7 +29,7 @@ export default {
   background-color: aliceblue;
 } */
 
-.busqueda{
+.datospersonales{
   margin: 10px auto;
   width: 90%;
   min-width: 200px; 

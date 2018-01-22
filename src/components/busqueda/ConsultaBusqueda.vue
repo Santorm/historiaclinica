@@ -3,24 +3,22 @@
     <div class="panelconsulta">
       <div>
         <md-layout class="searchinput_box">
-          <h2>Búsqueda de Pacientes:</h2>
           <md-input-container class='md-flex-100'>
 
-            <input class='inputsearch' v-on:keyup.prevent='showtable' v-model='inputbusqueda' placeholder='Buscar'></input>
+            <span id='searchtitle'>Buscar:</span><input class='inputsearch' v-on:keyup.prevent='showtable' v-model='inputbusqueda' placeholder='Introduzca un dato del paciente'></input>
 
           </md-input-container>
         </md-layout>
 
-        <md-table-card class='md-flex-100' v-if='mostrartabla'>
-          <md-toolbar>
-            <h1 class="md-title">Resultados:</h1>
-          </md-toolbar>
-          <md-table md-sort="apellidos">
+        <md-table-card class='md-flex-100 searchtable' v-if='mostrartabla'>
+           <md-table md-sort="apellidos" class='md-flex-100'>
             <md-table-header>
               <md-table-row>
                 <md-table-head></md-table-head>
+                <md-table-head></md-table-head>
                 <md-table-head md-sort-by="apellidos">Apellidos</md-table-head>
                 <md-table-head md-sort-by="nombre">Nombre</md-table-head>
+                <md-table-head md-sort-by="nombre">Nacimiento</md-table-head>
                 <md-table-head md-sort-by="ciudad">Ciudad</md-table-head>
                 <md-table-head md-sort-by="email">email</md-table-head>
                 <md-table-head md-sort-by="historiaclinica">
@@ -32,10 +30,11 @@
 
             <md-table-body>
 
-              <md-table-row v-if="busquedacaracter(row)" v-for="(row, rowIndex) in pacientes" :key="rowIndex" :md-item="row">
-                <md-table-cell v-for="(column, columnIndex) in row" :key="columnIndex">
+              <md-table-row  v-if="busquedacaracter(row)" v-for="(row, rowIndex) in pacientes" :key="rowIndex" :md-item="row">
+                 <span @click="selectPaciente(row)"> Selec </span>
+                <md-table-cell  v-for="(column, columnIndex) in row" :key="columnIndex">
 
-                  <span @click="selectPaciente(row)" v-if="column != row.id_persona">{{ column }}</span>
+                <span  v-if="column != row.id_persona">{{ column }}</span>
                   <!-- <span v-if="inputbusqueda == 'apellidos'">{{ column }}{{apellidos}}</span>  -->
                 </md-table-cell>
               </md-table-row>
@@ -44,7 +43,7 @@
             <!-- <span v-if="busquedacaracter()">No existen resultados para la búsqueda</span> -->
 
           </md-table>
-            <md-table-pagination
+    <!--        <md-table-pagination
     md-size="3"
     :md-total="this.pacientes.length"
     md-page="1"
@@ -52,14 +51,16 @@
     md-separator="de"
     :md-page-options="[3, 5, 25, 50]"
     @pagination="onPagination">
-    </md-table-pagination>
+    </md-table-pagination>  -->
         </md-table-card>
         <!-- </md-layout> -->
         <!-- //fin tabla//// -->
       </div>
 
     </div>
-    <!-- <pre>{{$data}}</pre> -->
+
+  
+    
   </div>
 </template>
 
@@ -74,6 +75,7 @@ export default {
       mostrartabla: false,
       urlConsulta: '/static/api/consultapacientes.php',
       pacientes: [],
+      resultadoPacientes: [],      
       urlSessionPat: '/static/api/actualpatient.php'
     }
   },
@@ -138,6 +140,7 @@ export default {
 
       var apellido = row['apellidos'].toLowerCase();
       var nombre = row['nombre'].toLowerCase();
+      var nacimiento = row['dateage'].toLowerCase();
       var ciudad = row['ciudad'].toLowerCase();
       var email = row['email'].toLowerCase();
       var historiaclinica = String(row['id_persona']).toLowerCase();
@@ -149,8 +152,7 @@ export default {
       var shistoriaclinica = String(row['id_persona']).substr(0, longitud).toLowerCase();
 
       var arrayrow = [];
-      arrayrow.push(apellido, nombre, ciudad, email, historiaclinica);
-
+      arrayrow.push(apellido, nombre, nacimiento, ciudad, email, historiaclinica);
       ///LO QUE EMPIEZA CON LA S ES PARA HACER LOS DOS SISTEMAS A LA VEZ
       var sarrayrow = [];
       sarrayrow.push(sapellido, snombre, sciudad, semail, shistoriaclinica);
@@ -187,11 +189,12 @@ export default {
     },
     selectPaciente: function(row){
 
-      // console.log("selectpatience", row)
-      EventBus.$emit('paciente', {
+        EventBus.$emit('paciente', {
         id_paciente_busqueda: row.id_persona,
         nombre_busqueda: row.nombre,
         apellidos_busqueda: row.apellidos,
+        nacimiento:row.dateage,
+        ciudad: row.ciudad,
         historiaclinica_busqueda: row.historiaclinica
       })
       //send data actual patient for session var identification in server
@@ -227,5 +230,16 @@ export default {
 
 .searchinput_box {
   position: relative;
+}
+
+.searchtable{
+  max-height:380px;
+
+}
+
+#searchtitle{
+  line-height: 30px;
+  padding-right: 20px;
+  font-size: 20px;
 }
 </style>
