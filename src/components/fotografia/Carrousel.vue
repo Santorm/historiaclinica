@@ -90,7 +90,6 @@ export default {
 
           this.dataphoto.push(response.data[item]);
         }
-
         this.getPictureData()
 
         // this.mostrartabla = true;
@@ -199,7 +198,7 @@ export default {
       
   },
    getPhotoSize: function(foto, nr) {
-     console.log("fotoengetphotosize", foto, foto.width, foto.height);
+    // console.log("fotoengetphotosize", foto, foto.width, foto.height);
      this.dataphoto[nr]["width"] = foto.width;
    }
   },  

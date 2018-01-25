@@ -5,7 +5,7 @@
         <md-layout class="searchinput_box">
           <md-input-container class='md-flex-100'>
 
-            <span id='searchtitle'>Buscar:</span><input class='inputsearch' v-on:keyup.prevent='showtable' v-model='inputbusqueda' placeholder='Introduzca un dato del paciente'></input>
+            <span id='searchtitle'>Buscar:</span><input class='inputsearch' v-on:keyup.prevent='showtable' v-model='inputbusqueda' placeholder='Introduzca un dato del paciente'>
 
           </md-input-container>
         </md-layout>
@@ -19,6 +19,7 @@
                 <md-table-head md-sort-by="apellidos">Apellidos</md-table-head>
                 <md-table-head md-sort-by="nombre">Nombre</md-table-head>
                 <md-table-head md-sort-by="nombre">Nacimiento</md-table-head>
+                <md-table-head md-sort-by="telefono">Teléfono</md-table-head>
                 <md-table-head md-sort-by="ciudad">Ciudad</md-table-head>
                 <md-table-head md-sort-by="email">email</md-table-head>
                 <md-table-head md-sort-by="historiaclinica">
