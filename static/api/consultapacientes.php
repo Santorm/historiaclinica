@@ -47,7 +47,7 @@ $result=mysqli_query($conexionLp, $sql) or die(mysqli_error($conexionLp));
 		// print_r( $fila);
 		// return false;
 		
-array_push($arrayCitas, array('id_persona'=>$fila['id_persona'], 'apellidos'=>$fila['apellidos'], 'nombre'=>$fila['nombre'], 'ciudad'=>$fila['ciudad'], 'email'=>$fila['email'], 'historiaclinica'=>$fila['historiaclinica']));
+array_push($arrayCitas, array('id_persona'=>$fila['id_persona'], 'apellidos'=>$fila['apellidos'], 'nombre'=>$fila['nombre'], 'dateage'=>$fila['dateage'] ,'telefono'=>$fila['telefono'], 'ciudad'=>$fila['ciudad'], 'email'=>$fila['email'], 'historiaclinica'=>$fila['historiaclinica']));
 		
  	}
 

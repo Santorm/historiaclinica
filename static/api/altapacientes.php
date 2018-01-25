@@ -14,10 +14,11 @@
 
 
 	$nombre=$request->nombre;
+	$dateage=$request->dateage;
 	$apellidos=$request->apellido;
 	$email=$request->email;
 	$ciudad=$request->ciudad;
-
+	$historiaclinica = substr($apellidos,0,2).substr($nombre,0,2).substr($ciudad,0,2).substr($dateage,0,4);
 	
 
 	// }
@@ -28,7 +29,7 @@
 	// }else{
 
 	
- $sql = "INSERT INTO paciente VALUES (NULL, '$nombre','$apellidos','$ciudad', '$email', CURRENT_TIMESTAMP, NULL, NULL);";
+ $sql = "INSERT INTO paciente VALUES (NULL, '$nombre','$apellidos', '$dateage', '$telefono', '$ciudad', '$email', '$historiaclinica', CURRENT_TIMESTAMP, NULL);";
 
  //controlar duplicados
 	if (!mysqli_query($conexionLp, $sql)) {
