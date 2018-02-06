@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-01-2018 a las 11:25:37
--- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
+-- Tiempo de generación: 27-01-2018 a las 13:52:42
+-- Versión del servidor: 10.1.28-MariaDB
+-- Versión de PHP: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -42,22 +44,12 @@ CREATE TABLE `fotografias` (
 --
 
 INSERT INTO `fotografias` (`id_foto`, `nombre`, `ruta`, `toma`, `id_persona`) VALUES
-(102, 'pic4.jpg', 'picsloaded/92/pic4.jpg', 'perfil derecho', 92),
-(103, 'pic5.jpg', 'picsloaded/92/pic5.jpg', 'perfil derecho', 92),
-(104, 'pic6.jpg', 'picsloaded/92/pic6.jpg', 'perfil derecho', 92),
-(105, 'pic7.jpg', 'picsloaded/92/pic7.jpg', 'perfil derecho', 92),
-(106, 'pic8.jpg', 'picsloaded/92/pic8.jpg', 'perfil derecho', 92),
-(107, 'Chrysanthemum.jpg', 'picsloaded/93/Chrysanthemum.jpg', 'perfil derecho', 93),
-(108, 'Desert.jpg', 'picsloaded/93/Desert.jpg', 'perfil derecho', 93),
-(109, 'Koala.jpg', 'picsloaded/93/Koala.jpg', 'perfil derecho', 93),
-(110, 'Lighthouse.jpg', 'picsloaded/93/Lighthouse.jpg', 'perfil derecho', 93),
-(111, 'aurora-gata-princesa', 'picsloaded/93/aurora-gata-princesa-3.jpg', 'perfil derecho', 93),
-(112, 'Jellyfish.jpg', 'picsloaded/93/Jellyfish.jpg', 'perfil derecho', 93),
-(113, 'Lighthouse.jpg', 'picsloaded/93/Lighthouse.jpg', 'perfil derecho', 93),
-(114, 'CIMG0440.jpg', 'picsloaded/93/CIMG0440.jpg', 'perfil derecho', 93),
-(115, '83454812.jpg', 'picsloaded/93/83454812.jpg', 'perfil derecho', 93),
-(116, 'Hydrangeas.jpg', 'picsloaded/94/Hydrangeas.jpg', 'perfil derecho', 94),
-(117, 'Jellyfish.jpg', 'picsloaded/94/Jellyfish.jpg', 'perfil derecho', 94);
+(118, 'pic4.jpg', 'picsloaded/101/pic4.jpg', 'perfil derecho', 101),
+(119, 'pic5.jpg', 'picsloaded/101/pic5.jpg', 'perfil derecho', 101),
+(120, 'pic6.jpg', 'picsloaded/101/pic6.jpg', 'perfil derecho', 101),
+(121, 'pic7.jpg', 'picsloaded/101/pic7.jpg', 'perfil derecho', 101),
+(122, 'pic8.jpg', 'picsloaded/101/pic8.jpg', 'perfil derecho', 101),
+(123, 'pic1.jpg', 'picsloaded/92/pic1.jpg', 'perfil derecho', 92);
 
 -- --------------------------------------------------------
 
@@ -85,10 +77,11 @@ CREATE TABLE `paciente` (
   `id_persona` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
+  `dateage` date NOT NULL,
   `telefono` varchar(15) DEFAULT NULL,
   `ciudad` varchar(100) CHARACTER SET utf8 NOT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `historiaclinica` varchar(10) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tipousuario` char(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
@@ -97,11 +90,13 @@ CREATE TABLE `paciente` (
 -- Volcado de datos para la tabla `paciente`
 --
 
-INSERT INTO `paciente` (`id_persona`, `nombre`, `apellidos`, `fecha_nacimiento`, `telefono`, `ciudad`, `email`, `timestamp`, `tipousuario`) VALUES
-(92, 'Santiago', 'Rueda Montoya', '1982-02-08', '6576425', 'Barcelona', 'santo@mail.com', '2017-09-19 18:42:46', NULL),
-(93, 'Mariela', 'Brito Luna', '1984-04-16', '77345398', 'Barcelona', 'gata@mail.com', '2017-09-19 18:43:32', NULL),
-(94, 'Johana', 'Brito Luna', '1980-09-08', '24524622t', 'Quito', 'joy@mail.com', '2017-09-19 18:44:01', NULL),
-(95, 'Miriam', 'LUNA CORDOVA', '1956-09-08', '4623476357', 'Ambato', 'miri@mail.com', '2017-09-19 18:44:27', NULL);
+INSERT INTO `paciente` (`id_persona`, `nombre`, `apellidos`, `dateage`, `telefono`, `ciudad`, `email`, `historiaclinica`, `timestamp`, `tipousuario`) VALUES
+(92, 'Santiago', 'Rueda Montoya', '1982-02-08', '6576425', 'Barcelona', 'santo@mail.com', '0', '2017-09-19 18:42:46', NULL),
+(93, 'Mariela', 'Brito Luna', '1984-04-16', '77345398', 'Barcelona', 'gata@mail.com', '0', '2017-09-19 18:43:32', NULL),
+(94, 'Johana', 'Brito Luna', '1980-09-08', '24524622t', 'Quito', 'joy@mail.com', '0', '2017-09-19 18:44:01', NULL),
+(95, 'Miriam', 'LUNA CORDOVA', '1956-09-08', '4623476357', 'Ambato', 'miri@mail.com', '0', '2017-09-19 18:44:27', NULL),
+(96, 'Jose Candelario', 'Tres Patines', '1967-04-06', '', 'La Habana', 'tres@mail.com', '0', '2018-01-25 10:49:08', NULL),
+(101, 'Roberto', 'Bolaños', '1928-08-02', '', 'Quito', 'rober@mail.com', 'BoRoQu1928', '2018-01-25 11:35:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -176,22 +171,26 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `fotografias`
 --
 ALTER TABLE `fotografias`
-  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
+
 --
 -- AUTO_INCREMENT de la tabla `fotos`
 --
 ALTER TABLE `fotos`
   MODIFY `id_fotos` int(10) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT de la tabla `paciente`
 --
 ALTER TABLE `paciente`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+
 --
 -- Restricciones para tablas volcadas
 --
@@ -201,6 +200,7 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `fotografias`
   ADD CONSTRAINT `fotografias_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `paciente` (`id_persona`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

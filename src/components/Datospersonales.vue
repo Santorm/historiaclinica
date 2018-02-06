@@ -2,7 +2,7 @@
 
   <b-container fluid>
     <b-row>
-        <h2 center>NOMBRE DEL PACIENTE</h2>
+        <h2 center>METER UN COMPONENTE O HACER DIRECTAMENTE??NOMBRE DEL PACIENTE</h2>
     </b-row>
   <pre>{{$data}}</pre>
   </b-container>
