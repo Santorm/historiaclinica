@@ -1,14 +1,16 @@
 <template>
-<div class="container">
-   <div class="datospersonales">
-aqui va un coponente del formularo de datos personales poner un formuario de vue material, o meor crear uno yo mismo y hacer que se actualice o modifique con la bbdd
-  </div>
-  
-</div>
+
+  <b-container fluid>
+    <b-row>
+        <h2 center>NOMBRE DEL PACIENTE</h2>
+    </b-row>
+  <pre>{{$data}}</pre>
+  </b-container>
+
 </template>
 
 <script>
-//import consultaBusqueda from './busqueda/consultaBusqueda'
+import { EventBus } from '../commons/event-bus'
 export default {
   name: 'datospersonales',
   components:{
@@ -16,27 +18,30 @@ export default {
   },
   data () {
     return {
-     
+     pacienteActivo:{},
     }
+  },
+  methods: {
+    eventBus: function() {
+      var self = this;
+      console.log("eventBusss")
+
+      EventBus.$on('paciente', function(row) {
+        console.log("row", row);
+        // self.pacienteActivo = {};
+        self.pacienteActivo = row;
+        console.log("se guardo")
+      })
+    }
+  },
+  created() {
+    this.eventBus()
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-/* .container{
-  background-color: aliceblue;
-} */
-
-.datospersonales{
-  margin: 10px auto;
-  width: 90%;
-  min-width: 200px; 
-  border-radius: 5px;
-  
- 
-}
 
 
 </style>

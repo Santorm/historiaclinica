@@ -208,18 +208,11 @@ export default {
     // this.getPhotoSize()
      
   }
-  // beforeMount: function(){ 
-  //   //this.eventBus()
-  //   this.getPictureData()    
-  // }
-
 }
 </script>
 <style scoped>
 .picture_box {
-  /* width: 200px; */
   height: 150px;
-  /* border: 1px solid blue; */
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;

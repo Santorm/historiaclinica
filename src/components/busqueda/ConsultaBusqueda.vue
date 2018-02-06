@@ -1,246 +1,130 @@
 <template>
-  <div class="container">
-    <div class="panelconsulta">
-      <div>
-        <md-layout class="searchinput_box">
-          <md-input-container class='md-flex-100'>
+<div class="panelconsulta">
+  <b-input-group prepend="Buscar">
+    <b-form-input v-on:input="ifshowtable" v-model="filter" placeholder="Introduzca un dato del paciente" ></b-form-input>
+        <b-input-group-append>
+          <b-btn v-if="filter" @click="filter = ''" variant="outline-success">Borrar</b-btn>
+        </b-input-group-append>
+  </b-input-group>
 
-            <span id='searchtitle'>Buscar:</span><input class='inputsearch' v-on:keyup.prevent='showtable' v-model='inputbusqueda' placeholder='Introduzca un dato del paciente'>
+  <b-table 
+  v-if="showtable"
+  striped hover responsive
+  :items="pacientes" 
+  :fields="fields"
+  :filter="filter"
+  >
 
-          </md-input-container>
-        </md-layout>
-
-        <md-table-card class='md-flex-100 searchtable' v-if='mostrartabla'>
-           <md-table md-sort="apellidos" class='md-flex-100'>
-            <md-table-header>
-              <md-table-row>
-                <md-table-head></md-table-head>
-                <md-table-head></md-table-head>
-                <md-table-head md-sort-by="apellidos">Apellidos</md-table-head>
-                <md-table-head md-sort-by="nombre">Nombre</md-table-head>
-                <md-table-head md-sort-by="nombre">Nacimiento</md-table-head>
-                <md-table-head md-sort-by="telefono">Teléfono</md-table-head>
-                <md-table-head md-sort-by="ciudad">Ciudad</md-table-head>
-                <md-table-head md-sort-by="email">email</md-table-head>
-                <md-table-head md-sort-by="historiaclinica">
-                  <md-icon>message</md-icon>
-                  <span>N# Historia</span>
-                </md-table-head>
-              </md-table-row>
-            </md-table-header>
-
-            <md-table-body>
-
-              <md-table-row  v-if="busquedacaracter(row)" v-for="(row, rowIndex) in pacientes" :key="rowIndex" :md-item="row">
-                 <span @click="selectPaciente(row)"> Selec </span>
-                <md-table-cell  v-for="(column, columnIndex) in row" :key="columnIndex">
-
-                <span  v-if="column != row.id_persona">{{ column }}</span>
-                  <!-- <span v-if="inputbusqueda == 'apellidos'">{{ column }}{{apellidos}}</span>  -->
-                </md-table-cell>
-              </md-table-row>
-
-            </md-table-body>
-            <!-- <span v-if="busquedacaracter()">No existen resultados para la búsqueda</span> -->
-
-          </md-table>
-    <!--        <md-table-pagination
-    md-size="3"
-    :md-total="this.pacientes.length"
-    md-page="1"
-    md-label="Mostrar pacientes"
-    md-separator="de"
-    :md-page-options="[3, 5, 25, 50]"
-    @pagination="onPagination">
-    </md-table-pagination>  -->
-        </md-table-card>
-        <!-- </md-layout> -->
-        <!-- //fin tabla//// -->
-      </div>
-
-    </div>
-
+    <template slot="select" slot-scope="data">
+      <!-- we use @click.stop here to prevent emitting of a 'row-clicked' event  -->
+      <b-button @click="selectPaciente(data.item)">
+          <i class="material-icons">done</i>
+      </b-button>
+ 
+    </template>
   
-    
-  </div>
+  
+  </b-table>
+</div>
+
 </template>
 
 <script>
-import { EventBus } from '../../commons/event-bus'
+import { EventBus } from "../../commons/event-bus";
+
+
 export default {
-  name: 'consultaBusqueda',
-  data() {
+  data () {
     return {
-      inputbusqueda: [],
-      claves: [],
-      mostrartabla: false,
-      urlConsulta: '/static/api/consultapacientes.php',
-      pacientes: [],
-      resultadoPacientes: [],      
-      urlSessionPat: '/static/api/actualpatient.php'
+      fields: [
+        'select',
+        {
+          key: 'apellidos',
+          sortable: true,
+        },
+        {
+          key: 'nombre',
+          label: 'Person age',
+          sortable: true,
+          },
+          {
+          key: 'dateage',
+          label: 'Nació',
+          sortable: true,
+          },
+          {
+          key: 'telefono',
+          label: 'Tlf',
+          sortable: false,
+          },
+          {
+          key: 'ciudad',
+          sortable: true,
+          },
+          {
+          key: 'email',
+          label: 'E-mail',
+          sortable: false,
+          },{
+          key: 'historiaclinica',
+          label: '#HC',
+          sortable: true,
+          } 
+      ],
+      filter: null,
+      showtable: false,
+      pacientes:[],
+      urlSessionPat: "/static/api/actualpatient.php",
+      urlConsulta : "/static/api/consultapacientes.php"
     }
   },
-  created: function() {
+  mounted: function() {
     this.consulta();
   },
   methods: {
     consulta: function() {
-      // alert('sirve')
-      // GET /someUrl
-
-      this.$http.post(this.urlConsulta).then(function(response) {
-
-        for (var pacientes in response.data) {
-
-          this.pacientes.push(response.data[pacientes]);
+        this.$http.post(this.urlConsulta).then(
+        function(response) {
+          for (var pacientes in response.data) {
+            this.pacientes.push(response.data[pacientes]);
+          }
+    },
+        response => {
+          // error callback
+          console.log("Ha fallado la consulta");
         }
-
-        // this.mostrartabla = true;
-
-
-      }, response => {
-        // error callback
-        console.log('mal', response);
-      });
-
+      );
     },
-    showtable: function() {
-      // console.log("siii";
-      if (this.inputbusqueda != '') {
-        this.mostrartabla = true;
+    ifshowtable: function() {
+      if (this.filter != "") {
+        this.showtable = true;
       } else {
-        this.mostrartabla = false;
+        this.showtable = false;
       }
-
-      // this.consulta();
-      // this.claves=Object.keys(this.pacientes[0]);
-      // for(var i=0 ; i<5 ; i++){
-      //    )[i];
-      //   arrayclaves.push(claves);
-      // }
-      // console.log(claves);
-      //los cambios
-
     },
-    busquedacaracter: function(row) {
-//  console.log("row", row)
-      //conforme voy escribiendo la longitud cambia y van formandose todos los elementos del array... asi puede encontrar cualquiera de los elementos. pero si se quiere ver el otro, depende de cuanto cambio lalongitud ya pudo cambiar el valor
+    selectPaciente: function(row) {
 
-
-
-      var inputbusquedaarray = this.inputbusqueda.toLowerCase().trim().split(" ");
-
-      // return false;
-      // var longitudultimo =[];
-      var longitudultimo = inputbusquedaarray.length;
-      var longitud = inputbusquedaarray[longitudultimo - 1].length;
-
-      ////////////////////////////////pop
-
-      // console.log(inputbusquedaarray, 'long', longitudultimo, longitud);
-
-      var apellido = row['apellidos'].toLowerCase();
-      var nombre = row['nombre'].toLowerCase();
-      var nacimiento = row['dateage'].toLowerCase();
-      var ciudad = row['ciudad'].toLowerCase();
-      var email = row['email'].toLowerCase();
-      var historiaclinica = String(row['id_persona']).toLowerCase();
-
-      var sapellido = row['apellidos'].substr(0, longitud).toLowerCase();
-      var snombre = row['nombre'].substr(0, longitud).toLowerCase();
-      var sciudad = row['ciudad'].substr(0, longitud).toLowerCase();
-      var semail = row['email'].substr(0, longitud).toLowerCase();
-      var shistoriaclinica = String(row['id_persona']).substr(0, longitud).toLowerCase();
-
-      var arrayrow = [];
-      arrayrow.push(apellido, nombre, nacimiento, ciudad, email, historiaclinica);
-      ///LO QUE EMPIEZA CON LA S ES PARA HACER LOS DOS SISTEMAS A LA VEZ
-      var sarrayrow = [];
-      sarrayrow.push(sapellido, snombre, sciudad, semail, shistoriaclinica);
-     // console.log('arrayrow', arrayrow);
-     // console.log('inputbusqueda', inputbusquedaarray)
-      // var inputbusquedalow = this.inputbusqueda.toLowerCase().trim();
-
-      // console.log(apellido, inputbusquedaarray.includes(apellido) || inputbusquedaarray.includes(nombre))
-
-      // return false; 
-
-      //  var aggg='';
-      var conteo = 0;
-      for (var i = 0; i < inputbusquedaarray.length; i++) {
-        // var agg= arrayrow.indexOf(inputbusquedaarray[i]);   
-
-        var aggg = arrayrow.includes(inputbusquedaarray[i]);
-        var saggg = sarrayrow.includes(inputbusquedaarray[i].substr(0, longitud));
-        if (aggg) {
-          conteo++
-        }
-       // console.log(aggg, conteo, longitud, saggg);
-      }
-
-
-      if (aggg && conteo == inputbusquedaarray.length || saggg) {
-
-
-        return true;
-      } else {
-        return false;
-      }
-
-    },
-    selectPaciente: function(row){
-
-        EventBus.$emit('paciente', {
+      console.log("funcionoooo", row);
+      EventBus.$emit("paciente", {
         id_paciente_busqueda: row.id_persona,
         nombre_busqueda: row.nombre,
         apellidos_busqueda: row.apellidos,
-        nacimiento:row.dateage,
+        nacimiento: row.dateage,
         ciudad: row.ciudad,
         historiaclinica_busqueda: row.historiaclinica
-      })
+      });
       //send data actual patient for session var identification in server
 
-      this.$http.post(this.urlSessionPat, row).then(function(response) {
-        console.log('ok', response);
-      }, response => {
-        // error callback
-        console.log('error', response);
-      });
+      this.$http.post(this.urlSessionPat, row).then(
+        function(response) {
+          console.log("ok", response);
+        },
+        response => {
+          // error callback
+          console.log("error", response);
+        }
+      );
     }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-.panelcontrol {
-  margin: 20px auto;
-  width: 100%;
-  min-width: 200px;
-  /* border: 1px solid grey; */
-  border-radius: 5px;
-  padding: 20px 100px;
-  height: fit-content;
-  /* background-color: rgba(128, 128, 128, 0.14); */
-}
-
-.inputsearch {
-  font-size: 16px;
-}
-
-.searchinput_box {
-  position: relative;
-}
-
-.searchtable{
-  max-height:380px;
-
-}
-
-#searchtitle{
-  line-height: 30px;
-  padding-right: 20px;
-  font-size: 20px;
-}
-</style>

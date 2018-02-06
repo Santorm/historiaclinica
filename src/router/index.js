@@ -9,9 +9,6 @@ import fotografia from '@/components/fotografia'
 import altapaciente from '@/components/panelcontrol/altapaciente'
 import panelconsulta from '@/components/panelcontrol/panelconsulta'
 import carrousel from '@/components/fotografia/carrousel'
-var VueMaterial = require('vue-material')
-Vue.use(VueMaterial)
-
 Vue.use(Router)
 
 export default new Router({
