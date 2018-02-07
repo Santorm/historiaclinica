@@ -18,7 +18,7 @@ export default {
   },
   data () {
     return {
-     pacienteActivo:{},
+     pacienteActivo: {},
     }
   },
   methods: {
@@ -26,15 +26,16 @@ export default {
       var self = this;
       console.log("eventBusss")
 
-      EventBus.$on('paciente', function(row) {
-        console.log("row", row);
+      EventBus.$once('paciente', function(row) {
+        console.log("row de eventbus", row);
         // self.pacienteActivo = {};
         self.pacienteActivo = row;
         console.log("se guardo")
       })
     }
   },
-  created() {
+  mounted() {
+    console.log("mounted");
     this.eventBus()
   }
 }

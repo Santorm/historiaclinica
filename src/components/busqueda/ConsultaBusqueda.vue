@@ -1,7 +1,7 @@
 <template>
 <div class="panelconsulta">
   <b-input-group prepend="Buscar">
-    <b-form-input v-on:input="ifshowtable" v-model="filter" placeholder="Introduzca un dato del paciente" ></b-form-input>
+    <b-form-input v-on:focus.once.native="consulta" v-on:input="ifshowtable" v-model="filter" placeholder="Introduzca un dato del paciente" ></b-form-input>
         <b-input-group-append>
           <b-btn v-if="filter" @click="filter = ''" variant="outline-success">Borrar</b-btn>
         </b-input-group-append>
@@ -17,8 +17,8 @@
 
     <template slot="select" slot-scope="data">
       <!-- we use @click.stop here to prevent emitting of a 'row-clicked' event  -->
-      <b-button @click="selectPaciente(data.item)">
-          <i class="material-icons">done</i>
+      <b-button id="btn-done" @click="selectPaciente(data.item)">
+          <i  class="material-icons">done</i>
       </b-button>
  
     </template>
@@ -78,9 +78,6 @@ export default {
       urlConsulta : "/static/api/consultapacientes.php"
     }
   },
-  mounted: function() {
-    this.consulta();
-  },
   methods: {
     consulta: function() {
         this.$http.post(this.urlConsulta).then(
@@ -88,6 +85,7 @@ export default {
           for (var pacientes in response.data) {
             this.pacientes.push(response.data[pacientes]);
           }
+        
     },
         response => {
           // error callback
@@ -96,17 +94,15 @@ export default {
       );
     },
     ifshowtable: function() {
-      if (this.filter != "") {
+      if (this.filter != "" && this.filter != null) {
         this.showtable = true;
       } else {
         this.showtable = false;
       }
     },
     selectPaciente: function(row) {
-
-      console.log("funcionoooo", row);
       EventBus.$emit("paciente", {
-        id_paciente_busqueda: row.id_persona,
+       // id_paciente_busqueda: row.id_persona,
         nombre_busqueda: row.nombre,
         apellidos_busqueda: row.apellidos,
         nacimiento: row.dateage,
@@ -128,3 +124,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  #btn-done{
+   background-color: #928057;
+  }
+</style>

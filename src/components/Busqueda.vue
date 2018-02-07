@@ -1,7 +1,6 @@
 <template>
 <div class="container">
- 
-  <div class="busqueda">
+   <div class="busqueda">
  <consulta-busqueda/>
   </div>
   
