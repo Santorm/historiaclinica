@@ -14,79 +14,74 @@
   :fields="fields"
   :filter="filter"
   >
-
     <template slot="select" slot-scope="data">
       <!-- we use @click.stop here to prevent emitting of a 'row-clicked' event  -->
-      <b-button id="btn-done" @click="selectPaciente(data.item)">
+      <b-button id="btn-done" @click="selectPatient(data.item)">
           <i  class="material-icons">done</i>
       </b-button>
- 
     </template>
-  
-  
   </b-table>
 </div>
-
 </template>
 
 <script>
-import { EventBus } from "../../commons/event-bus";
-
-
 export default {
-  data () {
+  data() {
     return {
       fields: [
-        'select',
+        "select",
         {
-          key: 'apellidos',
-          sortable: true,
+          key: "apellidos",
+          sortable: true
         },
         {
-          key: 'nombre',
-          label: 'Person age',
-          sortable: true,
-          },
-          {
-          key: 'dateage',
-          label: 'Nació',
-          sortable: true,
-          },
-          {
-          key: 'telefono',
-          label: 'Tlf',
-          sortable: false,
-          },
-          {
-          key: 'ciudad',
-          sortable: true,
-          },
-          {
-          key: 'email',
-          label: 'E-mail',
-          sortable: false,
-          },{
-          key: 'historiaclinica',
-          label: '#HC',
-          sortable: true,
-          } 
+          key: "nombre",
+          label: "Person age",
+          sortable: true
+        },
+        {
+          key: "dateage",
+          label: "Nació",
+          sortable: true
+        },
+        {
+          key: "telefono",
+          label: "Tlf",
+          sortable: false
+        },
+        {
+          key: "ciudad",
+          sortable: true
+        },
+        {
+          key: "email",
+          label: "E-mail",
+          sortable: false
+        },
+        {
+          key: "historiaclinica",
+          label: "#HC",
+          sortable: true
+        }
       ],
       filter: null,
       showtable: false,
-      pacientes:[],
-      urlSessionPat: "/static/api/actualpatient.php",
-      urlConsulta : "/static/api/consultapacientes.php"
-    }
+      pacientes: [],
+      urlConsulta: "/static/api/consultapacientes.php"
+    };
   },
+  computed: {},
   methods: {
+    selectPatient: function(row) {
+      return (this.$store.state.patientSelected = row);
+    },
     consulta: function() {
-        this.$http.post(this.urlConsulta).then(
+      this.$http.post(this.urlConsulta).then(
         function(response) {
           for (var pacientes in response.data) {
             this.pacientes.push(response.data[pacientes]);
           }
-        
-    },
+        },
         response => {
           // error callback
           console.log("Ha fallado la consulta");
@@ -99,33 +94,12 @@ export default {
       } else {
         this.showtable = false;
       }
-    },
-    selectPaciente: function(row) {
-      EventBus.$emit("paciente", {
-       // id_paciente_busqueda: row.id_persona,
-        nombre_busqueda: row.nombre,
-        apellidos_busqueda: row.apellidos,
-        nacimiento: row.dateage,
-        ciudad: row.ciudad,
-        historiaclinica_busqueda: row.historiaclinica
-      });
-      //send data actual patient for session var identification in server
-
-      this.$http.post(this.urlSessionPat, row).then(
-        function(response) {
-          console.log("ok", response);
-        },
-        response => {
-          // error callback
-          console.log("error", response);
-        }
-      );
     }
   }
-}
+};
 </script>
 <style scoped>
-  #btn-done{
-   background-color: #928057;
-  }
+#btn-done {
+  background-color: #928057;
+}
 </style>

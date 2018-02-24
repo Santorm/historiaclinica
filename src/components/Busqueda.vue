@@ -1,10 +1,7 @@
 <template>
-<div class="container">
-   <div class="busqueda">
+<b-container fluid>
  <consulta-busqueda/>
-  </div>
-  
-</div>
+</b-container>
 </template>
 
 <script>
@@ -24,19 +21,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-/* .container{
-  background-color: aliceblue;
-} */
-
-.busqueda{
-  margin: 10px auto;
-  width: 90%;
-  min-width: 200px; 
-  border-radius: 5px;
-  
- 
-}
-
-
 </style>

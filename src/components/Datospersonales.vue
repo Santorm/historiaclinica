@@ -1,48 +1,76 @@
 <template>
 
   <b-container fluid>
-    <b-row>
-        <h2 center>METER UN COMPONENTE O HACER DIRECTAMENTE??NOMBRE DEL PACIENTE</h2>
-    </b-row>
-  <pre>{{$data}}</pre>
+
+      <b-row>
+        <b-col cols="8">
+          <inputs-datos prepend="Nombre" :datavalue="getpatientSelected.nombre+' '+getpatientSelected.apellidos"/>
+        </b-col>
+        <b-col>
+          <b-badge variant="info">{{getpatientSelected.historiaclinica}}</b-badge>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="8">
+          <inputs-datos prepend="Nacimiento" :datavalue="getpatientSelected.dateage"/>
+        </b-col>
+        <b-col>
+          <b-badge variant="info">{{getpatientOld}}</b-badge>
+        </b-col>
+      </b-row>
+
+      <inputs-datos prepend="Teléf" :datavalue="getpatientSelected.telefono"/>
+      <inputs-datos prepend="Email" :datavalue="getpatientSelected.email"/>
+      <inputs-datos prepend="Ciudad" :datavalue="getpatientSelected.ciudad"/>
+
+      <b-form-select v-model="selected" :options="options" class="mb-3" />
+
+    <pre>{{getpatientSelected}}</pre>
   </b-container>
 
 </template>
 
 <script>
-import { EventBus } from '../commons/event-bus'
+import inputsDatos from "./datospersonales/inputsDatos";
+import { mapGetters } from "vuex";
 export default {
-  name: 'datospersonales',
-  components:{
-    //consultaBusqueda
+  name: "datospersonales",
+  components: {
+    inputsDatos
   },
-  data () {
+  data() {
     return {
-     pacienteActivo: {},
+      notediting: "notediting",
+      inputgroup: "inputgroup",
+      editing: "editing",
+      datavalue: ""
+    };
+  },
+  computed: {
+    ...mapGetters({
+      getpatientSelected: "getpatientSelected",
+      getpatientOld: "getpatientOld"
+    }),
+    inputDisabled: function() {
+      return true;
     }
   },
   methods: {
-    eventBus: function() {
-      var self = this;
-      console.log("eventBusss")
-
-      EventBus.$once('paciente', function(row) {
-        console.log("row de eventbus", row);
-        // self.pacienteActivo = {};
-        self.pacienteActivo = row;
-        console.log("se guardo")
-      })
-    }
-  },
-  mounted() {
-    console.log("mounted");
-    this.eventBus()
-  }
-}
+   }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.inputgroup {
+  margin-bottom: 10px;
+}
 
+.editing {
+  background-color: aliceblue;
+}
 
+.notediting {
+  background-color: #fff;
+}
 </style>

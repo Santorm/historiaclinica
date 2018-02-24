@@ -3,10 +3,10 @@
     <div class="logo">LOGOTIPO</div>
     <div class="pacientedata">
       <h1>Historia Clínica LunaPiel</h1>
-      <span>Nro Historia: {{pacienteActivo.historiaclinica_busqueda}}</span><br>
-      <span>Paciente: {{pacienteActivo.nombre_busqueda}} {{pacienteActivo.apellidos_busqueda}}</span><br>
-      <span>Nacimiento: {{pacienteActivo.nacimiento}}</span><br>
-      <span>Ciudad: {{pacienteActivo.ciudad}}</span>
+      <span>Nro Historia: {{getpatientSelected.historiaclinica}}</span><br>
+      <span>Paciente: {{getpatientSelected.nombre}} {{getpatientSelected.apellidos}}</span><br>
+      <span>Nacimiento: {{getpatientSelected.dateage}}</span><br>
+      <span>Ciudad: {{getpatientSelected.ciudad}}</span>
       
       <!-- <router-link to="/login">
         <md-button class="btn_login md-raised md-primary">Iniciar Sesión</md-button>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { EventBus } from '../commons/event-bus'
+import { mapGetters } from 'vuex'; 
 export default {
   name: 'homeheader',
   data() {
@@ -24,18 +24,10 @@ export default {
       pacienteActivo: {},
     }
   },
-  methods: {
-    eventBus: function() {
-      var self = this
-
-      EventBus.$on('paciente', function(row) {
-        self.pacienteActivo = {}
-        self.pacienteActivo = row
-      })
-    }
-  },
-  created() {
-    this.eventBus()
+  computed: {
+    ...mapGetters({
+      getpatientSelected: 'getpatientSelected'   
+    })
   }
 }
 </script>

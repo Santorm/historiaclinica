@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { EventBus } from '../../commons/event-bus'
 export default {
   name: 'loadPics',
   components: {

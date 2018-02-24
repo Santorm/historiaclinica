@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { EventBus } from '../commons/event-bus'
 import menuaside from './menuaside'
 import homeheader from './homeheader'
 import login from './login'
@@ -36,23 +35,7 @@ export default {
     login,
     panelcontrol,
     fotografia
-  },
-  methods: {
-  eventBus: function() {
-      var self = this
-  // console.log("se cretBuseo ev")
-      EventBus.$on('paciente', function(row) {
-        //  console.log("home row", row)
-        // self.pacienteActivo = {}
-        self.pacienteActivo = row
-      })
-    }
-},
-created(){
-  this.eventBus();
-}
-
-
+  }
 }
 </script>
 
@@ -110,9 +93,8 @@ created(){
 }
 
 .content_box {
-  background-color: aliceblue;
+  margin: 20px;
   width: inherit;
-  /* height: 80vh; */
-  background-color: #fff;
-}
+  min-width: 200px; 
+ }
 </style>
