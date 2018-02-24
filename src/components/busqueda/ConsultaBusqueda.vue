@@ -7,10 +7,10 @@
         </b-input-group-append>
   </b-input-group>
 
-  <b-table 
+  <b-table
   v-if="showtable"
   striped hover responsive
-  :items="pacientes" 
+  :items="getpatientFetched"
   :fields="fields"
   :filter="filter"
   >
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -67,27 +69,21 @@ export default {
       filter: null,
       showtable: false,
       pacientes: [],
-      urlConsulta: "/static/api/consultapacientes.php"
+      //urlConsulta: "/static/api/consultapacientes.php"
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      getpatientFetched: "getpatientFetched"
+    }),
+  },
   methods: {
     selectPatient: function(row) {
       return (this.$store.state.patientSelected = row);
     },
-    consulta: function() {
-      this.$http.post(this.urlConsulta).then(
-        function(response) {
-          for (var pacientes in response.data) {
-            this.pacientes.push(response.data[pacientes]);
-          }
-        },
-        response => {
-          // error callback
-          console.log("Ha fallado la consulta");
-        }
-      );
-    },
+    ...mapActions({
+      consulta: "consulta"
+    }),
     ifshowtable: function() {
       if (this.filter != "" && this.filter != null) {
         this.showtable = true;
