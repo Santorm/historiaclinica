@@ -1,30 +1,59 @@
 <template>
       <b-input-group class="inputgroup" :prepend="prepend">
-          <b-form-input 
-          :value="datavalue"
-          :class="[inputDisabled ? notediting : editing]"
-          :disabled="inputDisabled">   
+          <b-form-input
+          :id="id"
+          :name="name"
+          v-model="value"
+          :class="[disabled ? notediting : editing]"
+          :disabled="disabled"
+          @change="changevent"
+
+          >
           </b-form-input>
-      </b-input-group>
+
+        </b-input-group>
+
 </template>
 
 <script>
-//import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
       notediting: "notediting",
       inputgroup: "inputgroup",
-      editing: "editing"
+      editing: "editing",
+      editfields: "",
+      value: "",
     };
   },
-  props: ["prepend", "datavalue"],
+  props: ["prepend", "id", "name", "disabled"],
   computed: {
-    inputDisabled: function() {
-      return true;
+    ...mapGetters({
+      getpatientSelected: "getpatientSelected"
+    })
+  },
+  methods: {
+    ...mapMutations({
+      updateDataPatientSelected: "updateDataPatientSelected"
+    }),
+    changevent: function(){
+      let payload = [this.value, this.name]
+      this.updateDataPatientSelected(payload);
     }
   },
-  methods: {}
+  created: function(){
+      let namekey = this.name;
+      if (namekey == "nombre") {
+
+        this.value = this.getpatientSelected[namekey] +" "+this.getpatientSelected["apellidos"]
+
+      } else {
+        this.value = this.getpatientSelected[namekey];
+         //return this.getpatientSelected[namekey];
+      }
+  }
 };
 </script>
 
@@ -32,13 +61,5 @@ export default {
 <style scoped>
 .inputgroup {
   margin-bottom: 10px;
-}
-
-.editing {
-  background-color: aliceblue;
-}
-
-.notediting {
-  background-color: #fff;
 }
 </style>

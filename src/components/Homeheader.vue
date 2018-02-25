@@ -1,13 +1,14 @@
 <template>
   <div class="container_header">
-    <div class="logo">LOGOTIPO</div>
+
+    <div class="logo"></div>
     <div class="pacientedata">
       <h1>Historia Clínica LunaPiel</h1>
       <span>Nro Historia: {{getpatientSelected.historiaclinica}}</span><br>
       <span>Paciente: {{getpatientSelected.nombre}} {{getpatientSelected.apellidos}}</span><br>
       <span>Nacimiento: {{getpatientSelected.dateage}}</span><br>
       <span>Ciudad: {{getpatientSelected.ciudad}}</span>
-      
+
       <!-- <router-link to="/login">
         <md-button class="btn_login md-raised md-primary">Iniciar Sesión</md-button>
       </router-link> -->
@@ -16,20 +17,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'; 
+import { mapGetters } from "vuex";
 export default {
-  name: 'homeheader',
+  name: "homeheader",
   data() {
     return {
-      pacienteActivo: {},
-    }
+      pacienteActivo: {}
+    };
   },
   computed: {
     ...mapGetters({
-      getpatientSelected: 'getpatientSelected'   
+      getpatientSelected: "getpatientSelected"
     })
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -47,10 +48,12 @@ export default {
 }
 
 .logo {
-      width: 250px;
-    min-width: 250px;;
-  /* border: 1px solid black; */
-  /* height: 10%; */
+  width: 230px;
+  min-width: 230px;
+  background-image: url("../assets/img/logo_gold_lp.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+
 }
 
 h1 {
@@ -59,5 +62,14 @@ h1 {
 
 .btn_login {
   height: 40px;
+}
+
+.pacientedata{
+  margin-left: 30px;
+  width: 100%;
+}
+
+.pacientedata h1{
+  float: right;
 }
 </style>

@@ -16,18 +16,18 @@
 </template>
 
 <script>
-import menuaside from './menuaside'
-import homeheader from './homeheader'
-import login from './login'
-import panelcontrol from './panelcontrol'
-import fotografia from './fotografia'
-import panelconsulta from './panelcontrol/panelconsulta'
+import menuaside from "./menuaside";
+import homeheader from "./homeheader";
+import login from "./login";
+import panelcontrol from "./panelcontrol";
+import fotografia from "./fotografia";
+import panelconsulta from "./panelcontrol/panelconsulta";
 export default {
-  name: 'home',
+  name: "home",
   data() {
     return {
       pacienteActivo: {}
-    }
+    };
   },
   components: {
     menuaside,
@@ -36,7 +36,7 @@ export default {
     panelcontrol,
     fotografia
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -48,12 +48,11 @@ export default {
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch; 
+  align-items: stretch;
   background-color: #fff;
   border: solid 1px cyan;
-  
-} */
 
+} */
 
 .home {
   width: 100%;
@@ -69,7 +68,7 @@ export default {
 .header_box {
   width: 100%;
   height: 20vh;
-  min-height: 150px;  
+  min-height: 150px;
   /* border: 1px solid red; */
 }
 
@@ -78,9 +77,8 @@ export default {
   height: 80vh;
   display: flex;
   flex-direction: row;
-  justify-content:flex-start;
-  align-items:stretch;
-  border: solid 1px red;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .menu_aside {
@@ -88,13 +86,12 @@ export default {
   min-width: 250px;
   text-align: center;
   /* min-height: 568px; */
-  border: 1px solid blue;
-    padding: 10px;
+  padding: 10px;
 }
 
 .content_box {
   margin: 20px;
   width: inherit;
-  min-width: 200px; 
- }
+  min-width: 200px;
+}
 </style>
