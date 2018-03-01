@@ -6,7 +6,7 @@
           v-model="value"
           :class="[disabled ? notediting : editing]"
           :disabled="disabled"
-          @change="changevent"
+          :cancelsave="cancelsave"
 
           >
           </b-form-input>
@@ -28,7 +28,7 @@ export default {
       value: "",
     };
   },
-  props: ["prepend", "id", "name", "disabled"],
+  props: ["prepend", "id", "name", "disabled", "cancelsave"],
   computed: {
     ...mapGetters({
       getpatientSelected: "getpatientSelected"
@@ -39,20 +39,38 @@ export default {
       updateDataPatientSelected: "updateDataPatientSelected"
     }),
     changevent: function(){
-      let payload = [this.value, this.name]
-      this.updateDataPatientSelected(payload);
-    }
-  },
-  created: function(){
+      
+        let payload = [this.value, this.name]
+        this.updateDataPatientSelected(payload);
+     
+    },
+    getInfopatientSelected: function(){
+       
       let namekey = this.name;
-      if (namekey == "nombre") {
+      // if (namekey == "nombre") {
 
-        this.value = this.getpatientSelected[namekey] +" "+this.getpatientSelected["apellidos"]
+      //   this.value = this.getpatientSelected[namekey] +" "+this.getpatientSelected["apellidos"]
 
-      } else {
+      // } else {
         this.value = this.getpatientSelected[namekey];
          //return this.getpatientSelected[namekey];
-      }
+      // }
+       
+  }
+
+  },
+  created: function(){
+      this.getInfopatientSelected();
+  },
+  beforeUpdate: function (){
+ 
+     if(this.cancelsave == "cancel"){
+      this.getInfopatientSelected();
+     }else if(this.cancelsave == "save"){
+        this.changevent();    
+     }
+    
+
   }
 };
 </script>

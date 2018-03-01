@@ -4,7 +4,7 @@
 
       <b-row>
         <b-col cols="8">
-          <inputs-datos :disabled="disabled" prepend="Nombre" :id="getpatientSelected.id_persona" name="nombre" />
+          <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Nombre" :id="getpatientSelected.id_persona" name="nombre" />
         </b-col>
         <b-col>
           <b-badge variant="info">{{getpatientSelected.historiaclinica}}</b-badge>
@@ -12,22 +12,22 @@
       </b-row>
       <b-row>
         <b-col cols="8">
-          <inputs-datos :disabled="disabled" prepend="Nacimiento" :id="getpatientSelected.id_persona" name="dateage"/>
+          <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Nacimiento" :id="getpatientSelected.id_persona" name="dateage"/>
         </b-col>
         <b-col>
           <b-badge variant="info">{{getpatientOld}}</b-badge>
         </b-col>
       </b-row>
 
-      <inputs-datos :disabled="disabled" prepend="Teléfono" :id="getpatientSelected.id_persona" name="telefono"/>
-      <inputs-datos :disabled="disabled" prepend="Email" :id="getpatientSelected.id_persona" name="email"/>
-      <inputs-datos :disabled="disabled" prepend="Ciudad" :id="getpatientSelected.id_persona" name="ciudad"/>
+      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Teléfono" :id="getpatientSelected.id_persona" name="telefono"/>
+      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Email" :id="getpatientSelected.id_persona" name="email"/>
+      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Ciudad" :id="getpatientSelected.id_persona" name="ciudad"/>
 
-      <select-datos :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
-      <select-datos :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
+      <select-datos :cancelsave="cancelsave" :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
+      <select-datos :cancelsave="cancelsave" :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
 
 
-      <b-button @click="editfields">{{btnInfo}}</b-button>
+      <b-button @click="editfields(btnInfo)">{{btnInfo}}</b-button>
       <b-button @click="saveChanges" v-if="this.btnInfo == 'Cancelar'">Guardar</b-button>
 
 
@@ -55,7 +55,8 @@ export default {
       datavalue: "",
       disabled: true,
       selected: "null",
-      btnInfo: "Editar"
+      btnInfo: "Editar",
+      cancelsave: "cancel"
     };
   },
   computed: {
@@ -70,13 +71,22 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveChanges: "saveChanges"
+      saveChanges: "saveChanges" 
     }),
-    editfields: function() {
+    saveChanges:function(){
+      this.cancelsave = "save";
+      this.btnInfo = "Editar";
+      this.disabled = true;
+    },
+    editfields: function(btnInfo) {
+
+     
         this.disabled = !this.disabled;
         if(this.disabled){
+          this.cancelsave = "cancel";
           this.btnInfo = "Editar";
         }else{
+          this.cancelsave = "edit";
           this.btnInfo = "Cancelar";
         }
 
