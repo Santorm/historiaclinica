@@ -4,7 +4,7 @@
 
       <b-row>
         <b-col cols="8">
-          <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Nombre" :id="getpatientSelected.id_persona" name="nombre" />
+          <inputs-datos prepend="Nombre" :id="getpatientSelected.id_persona" name="nombre" />
         </b-col>
         <b-col>
           <b-badge variant="info">{{getpatientSelected.historiaclinica}}</b-badge>
@@ -12,24 +12,22 @@
       </b-row>
       <b-row>
         <b-col cols="8">
-          <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Nacimiento" :id="getpatientSelected.id_persona" name="dateage"/>
+          <inputs-datos   prepend="Nacimiento" :id="getpatientSelected.id_persona" name="dateage"/>
         </b-col>
         <b-col>
           <b-badge variant="info">{{getpatientOld}}</b-badge>
         </b-col>
       </b-row>
 
-      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Teléfono" :id="getpatientSelected.id_persona" name="telefono"/>
-      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Email" :id="getpatientSelected.id_persona" name="email"/>
-      <inputs-datos :cancelsave="cancelsave" :disabled="disabled" prepend="Ciudad" :id="getpatientSelected.id_persona" name="ciudad"/>
+      <inputs-datos  prepend="Teléfono" :id="getpatientSelected.id_persona" name="telefono"/>
+      <inputs-datos  prepend="Email" :id="getpatientSelected.id_persona" name="email"/>
+      <inputs-datos  prepend="Ciudad" :id="getpatientSelected.id_persona" name="ciudad"/>
 
-      <select-datos :cancelsave="cancelsave" :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
-      <select-datos :cancelsave="cancelsave" :disabled="disabled" :options="getoptionEstadoCivil" ></select-datos>
+      <select-datos  :options="getoptionEstadoCivil" ></select-datos>
+      <select-datos  :options="getoptionEstadoCivil" ></select-datos>
 
 
-      <b-button @click="editfields(btnInfo)">{{btnInfo}}</b-button>
-      <b-button @click="saveChanges" v-if="this.btnInfo == 'Cancelar'">Guardar</b-button>
-
+       <btns-editsave></btns-editsave>
 
     <pre>{{getpatientSelected}}</pre>
   </b-container>
@@ -37,6 +35,7 @@
 </template>
 
 <script>
+import btnsEditsave from "./commons/BtnsEditsave";
 import inputsDatos from "./datospersonales/inputsDatos";
 import selectDatos from "./datospersonales/selectDatos";
 import { mapGetters } from "vuex";
@@ -45,7 +44,8 @@ export default {
   name: "datospersonales",
   components: {
     inputsDatos,
-    selectDatos
+    selectDatos,
+    btnsEditsave
   },
   data() {
     return {
@@ -53,10 +53,8 @@ export default {
       inputgroup: "inputgroup",
       editing: "editing",
       datavalue: "",
-      disabled: true,
       selected: "null",
-      btnInfo: "Editar",
-      cancelsave: "cancel"
+
     };
   },
   computed: {
@@ -71,7 +69,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveChanges: "saveChanges" 
+      saveChanges: "saveChanges"
     }),
     saveChanges:function(){
       this.cancelsave = "save";
@@ -80,7 +78,7 @@ export default {
     },
     editfields: function(btnInfo) {
 
-     
+
         this.disabled = !this.disabled;
         if(this.disabled){
           this.cancelsave = "cancel";

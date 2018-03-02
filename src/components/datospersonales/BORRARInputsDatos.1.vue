@@ -5,9 +5,8 @@
           :name="name"
           v-model="value"
           :class="[disabled ? notediting : editing]"
-          :disabled="getbtneditSaveState.disabled"
-          :cancelsave="getbtneditSaveState.cancelsave"
-
+          :disabled="disabled"
+          :cancelsave="cancelsave"
 
           >
           </b-form-input>
@@ -26,14 +25,13 @@ export default {
       inputgroup: "inputgroup",
       editing: "editing",
       editfields: "",
-      value: ""
+      value: "",
     };
   },
   props: ["prepend", "id", "name", "disabled", "cancelsave"],
   computed: {
     ...mapGetters({
-      getpatientSelected: "getpatientSelected",
-      getbtneditSaveState: "getbtneditSaveState"
+      getpatientSelected: "getpatientSelected"
     })
   },
   methods: {
@@ -41,14 +39,13 @@ export default {
       updateDataPatientSelected: "updateDataPatientSelected"
     }),
     changevent: function(){
-      console.log("change event")
+      
         let payload = [this.value, this.name]
-        // console.log("paulod", payload)
         this.updateDataPatientSelected(payload);
-
+     
     },
     getInfopatientSelected: function(){
-
+       
       let namekey = this.name;
       // if (namekey == "nombre") {
 
@@ -58,7 +55,7 @@ export default {
         this.value = this.getpatientSelected[namekey];
          //return this.getpatientSelected[namekey];
       // }
-
+       
   }
 
   },
@@ -66,14 +63,13 @@ export default {
       this.getInfopatientSelected();
   },
   beforeUpdate: function (){
-    console.log("before update", this.getbtneditSaveState.cancelsave)
-
-     if(this.getbtneditSaveState.cancelsave == "cancel"){
+ 
+     if(this.cancelsave == "cancel"){
       this.getInfopatientSelected();
-     }else if(this.getbtneditSaveState.cancelsave == "save"){
-        this.changevent();
+     }else if(this.cancelsave == "save"){
+        this.changevent();    
      }
-
+    
 
   }
 };

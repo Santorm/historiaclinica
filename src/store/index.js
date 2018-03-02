@@ -18,7 +18,13 @@ export const store = new Vuex.Store({
              { value: 3, text: "Viudo" },
              { value: 4, text: "Divorciado" },
              { value: 5, text: "Unión Libre" }
-           ]
+           ],
+           btneditSaveState: {
+             cancelsave: "cancel",
+             disabled: true,
+             btnInfo: "Editar"
+            }
+
            //y asi sucesivamente van entrando cada una de las etapas de la HC con los estados de cada componente
          },
          getters: {
@@ -30,6 +36,9 @@ export const store = new Vuex.Store({
            },
            getoptionEstadoCivil(state) {
              return state.optionEstadoCivil;
+           },
+           getbtneditSaveState(state) {
+             return state.btneditSaveState;
            },
            getpatientOld(state) {
              if (state.patientSelected != "") {
@@ -52,20 +61,34 @@ export const store = new Vuex.Store({
          },
          user: {},
          mutations: {
-           //mutatios es lo mismo que getters, pero como segundo argumento despues de state, se puede añadir un objeto o un valor pejm userID
-           // De esta manera lo que hacemos es que cada vez que vayamos a cambiar el estado del paciente pase por mutaciones y no directamente y así poder gestiuonar estado
-           //state.user.find(user => {user.id = user_id}) esta linea sirve para encontrar el valor edl objero
-           updateDataPatientSelected(state, value){
+           btnsave(state){
+              state.btneditSaveState.cancelsave = "save";
+              state.btneditSaveState.btnInfo = "Editar";
+              state.btneditSaveState.disabled = true;
+           },
+           updateDataPatientSelected(state, value) {
+// TODOAHORA: VER COMO SE GUARDA MISMO LA INFORMACION
+             state.patientSelected[value[1]] = value[0];
+              console.log("funciono la mierda", value)
 
-            state.patientSelected[value[1]] = value[0];
-                // console.log("funciono la mierda", value)
-
-                // TODO: Ya se recibe como parámetro el valor cabiado y el nombre key, ahora si se puede cambiar el valor
+             // TODO: Ya se recibe como parámetro el valor cabiado y el nombre key, ahora si se puede cambiar el valor
            },
            fetchUsers(state, response) {
              //state.pacientes = pacientes;
              for (var pacientes in response) {
                state.pacientes.push(response[pacientes]);
+             }
+           },
+           editfields(state, value) {
+              // console.log("btneditSaveState", value, state.btneditSaveState);
+
+             state.btneditSaveState.disabled = !state.btneditSaveState.disabled;
+             if (state.btneditSaveState.disabled) {
+               state.btneditSaveState.cancelsave = "cancel";
+               state.btneditSaveState.btnInfo = "Editar";
+             } else {
+               state.btneditSaveState.cancelsave = "edit";
+               state.btneditSaveState.btnInfo = "Cancelar";
              }
            }
          },
@@ -85,8 +108,9 @@ export const store = new Vuex.Store({
              );
            },
            saveChanges({ commit }) {
-             console.log("saaave");
 
+            // console.log("respuesta", commit)
+             commit("btnsave");
              commit("updatePatienteSelected", response.data);
            }
          }
