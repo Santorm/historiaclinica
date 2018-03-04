@@ -68,27 +68,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      saveChanges: "saveChanges"
-    }),
-    saveChanges:function(){
-      this.cancelsave = "save";
-      this.btnInfo = "Editar";
-      this.disabled = true;
-    },
-    editfields: function(btnInfo) {
 
-
-        this.disabled = !this.disabled;
-        if(this.disabled){
-          this.cancelsave = "cancel";
-          this.btnInfo = "Editar";
-        }else{
-          this.cancelsave = "edit";
-          this.btnInfo = "Cancelar";
-        }
-
-    }
   }
 };
 </script>

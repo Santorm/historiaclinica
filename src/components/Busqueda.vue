@@ -5,20 +5,26 @@
 </template>
 
 <script>
-import consultaBusqueda from './busqueda/consultaBusqueda'
+import consultaBusqueda from "./busqueda/consultaBusqueda"
+import VueFire from 'vuefire'
 export default {
-  name: 'busqueda',
-  components:{
+  name: "busqueda",
+  components: {
     consultaBusqueda
   },
-  data () {
+  data() {
     return {
-     
+      pacientes: [],
+      pacientesSelec: []
     }
+  },
+  method: {
+
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

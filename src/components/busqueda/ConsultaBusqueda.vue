@@ -21,6 +21,7 @@
       </b-button>
     </template>
   </b-table>
+  <!-- <pre>{{$data}}</pre> -->
 </div>
 </template>
 

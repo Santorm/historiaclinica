@@ -1,62 +1,122 @@
 <template>
-<md-layout md-flex='100' class="container">
+<div class="home">
+  <header class='header_box'>
+      <homeheader :userstate="emaillogeado"></homeheader>
+    </header>
   <div class="login">
-    <h2>Inicio de Sesión</h2>
-   <md-layout>
-      <form class='md-flex-100' @submit.stop.prevent="submit">
-        <md-input-container class='md-flex-100'>
-          <label>Usuario</label>
-          <md-input required></md-input>
-          <span class="md-error">Textarea validation message</span>
-        </md-input-container>
-        <md-input-container class='md-flex-100'>
-          <label>Password</label>
-          <md-input required></md-input>
-          <span class="md-error">Textarea validation message</span>
-        </md-input-container>
-
-
-        
-      </form>
-      <md-button class='btn_primario md-primary md-raised'>Inciar Sesión</md-button>
-    </md-layout>
+    <h3>Ingresar</h3>
+    <input type="text" v-model="email" placeholder="Email"><br>
+    <input type="password" v-model="password" placeholder="Password"><br>
+    <button v-on:click="signIn">Entrar</button>
+    <p>You don't have an account ? You can <router-link to="/signup">create one</router-link></p>
   </div>
-</md-layout>
+
+  <pre>{{$data}}</pre>
+  </div>
 </template>
 
 <script>
+import homeheader from "./homeheader";
+import firebase from "firebase";
 export default {
-  name: 'login',
-  data () {
+  name: "login",
+  data: function() {
     return {
-     
+      email: "",
+      password: "",
+      displayName:"",
+      emaillogeado:"",
+      emailVerified:"",
+      photoURL:"",
+      isAnonymous:"",
+      uid:"",
+      providerData:""
+    };
+  },
+  components: {
+    homeheader
+  },
+  methods: {
+    signIn: function() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(
+          user => {
+            this.$router.replace("home");
+          },
+          err => {
+            alert("Oops. " + err.message);
+          }
+        );
+    },
+     userState: function() {
+       var self = this;
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          console.log("entroooo")
+          // User is signed in.
+          self.displayName = user.displayName;
+          self.emaillogeado = user.email;
+          self.emailVerified = user.emailVerified;
+          self.photoURL = user.photoURL;
+          self.isAnonymous = user.isAnonymous;
+          self.uid = user.uid;
+          self.providerData = user.providerData;
+          // ...
+        } else {
+          // User is signed out.
+          // ...
+        }
+      });
     }
+  },
+  created : function(){
+     this.userState();
   }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-/* .container{
-  background-color: aliceblue;
-} */
-
-.login{
-  margin: 100px auto;
-  width: 60%;
-  min-width: 200px; 
-  /* border: 1px solid grey; */
-  border-radius: 5px;
-  padding: 20px 100px;
-  height: fit-content;
-  background-color: rgba(128, 128, 128, 0.14);
- 
+/* "scoped" attribute limit the CSS to this component only */
+.login {
+  margin-top: 40px;
+  margin: auto;
+}
+input {
+  margin: 10px 0;
+  width: 100%;
+  padding: 15px;
+}
+button {
+  margin-top: 20px;
+  width: 100px;
+  cursor: pointer;
+}
+p {
+  margin-top: 40px;
+  font-size: 13px;
+}
+p a {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.btn_primario{
-  float: right;
+.home {
+  width: 100%;
+  height: 100vh;
+  /* border: solid 1px grey; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: #fff;
 }
 
-
+.header_box {
+  width: 100%;
+  height: 20vh;
+  min-height: 150px;
+  /* border: 1px solid red; */
+}
 </style>

@@ -7,28 +7,43 @@
       <span>Nro Historia: {{getpatientSelected.historiaclinica}}</span><br>
       <span>Paciente: {{getpatientSelected.nombre}} {{getpatientSelected.apellidos}}</span><br>
       <span>Nacimiento: {{getpatientSelected.dateage}}</span><br>
-      <span>Ciudad: {{getpatientSelected.ciudad}}</span>
+      <span>Ciudad: {{getpatientSelected.ciudad}}</span><br>
 
-      <!-- <router-link to="/login">
-        <md-button class="btn_login md-raised md-primary">Iniciar Sesión</md-button>
-      </router-link> -->
-    </div>
+
+      <span>Usuario: {{this.userstate}}</span>
+      <b-button v-if="checklogout" @click="logout">Salir</b-button>
+
+
+          </div>
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 import { mapGetters } from "vuex";
 export default {
   name: "homeheader",
   data() {
     return {
-      pacienteActivo: {}
+      pacienteActivo: {},
+      checklogout: true
     };
   },
+  props:["userstate"],
   computed: {
     ...mapGetters({
       getpatientSelected: "getpatientSelected"
     })
+  },
+  methods: {
+    logout: function() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("login");
+        });
+    }
   }
 };
 </script>
@@ -53,7 +68,6 @@ export default {
   background-image: url("../assets/img/logo_gold_lp.png");
   background-repeat: no-repeat;
   background-size: contain;
-
 }
 
 h1 {
@@ -64,12 +78,12 @@ h1 {
   height: 40px;
 }
 
-.pacientedata{
+.pacientedata {
   margin-left: 30px;
   width: 100%;
 }
 
-.pacientedata h1{
+.pacientedata h1 {
   float: right;
 }
 </style>

@@ -1,118 +1,150 @@
 <template>
-  <md-layout md-flex='100' class="container">
-    <div class="altapaciente">
-      <!-- <h2>Nueva Historia clínica</h2> -->
-  
-      <md-layout>
-  
-        <form class='md-flex-100' @submit.stop.prevent="submit">
-  
-          <md-input-container class='md-flex-100'>
-            <label>Nombre</label>
-            <md-input type="text" v-model='paciente.nombre' required></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-input-container class='md-flex-100'>
-            <label>Apellido</label>
-            <md-input type="text" v-model='paciente.apellido' required></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-input-container class='md-flex-100'>
-            <label>Fecha de Nacimiento</label>
-            <md-input type="date" v-model='paciente.dateage' required></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-input-container class='md-flex-100'>
-            <label>Teléfono</label>
-            <md-input type="tel" v-model='paciente.telefono' required></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-input-container class='md-flex-100'>
-            <label>Email</label>
-            <md-input type="email" v-model='paciente.email'></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-input-container class='md-flex-100'>
-            <label>Ciudad</label>
-            <md-input type="text" v-model='paciente.ciudad' required></md-input>
-            <span class="md-error">No se han encontrado resultados</span>
-          </md-input-container>
-          <md-button @click.prevent='altapacientes' class='btn_primario md-primary md-raised'>Agregar</md-button>
-        </form>
-  
-      </md-layout>
-      
-    </div>
-  </md-layout>
+
+  <b-container fluid>
+
+    <b-input-group  class="inputgroup" prepend="Nombre">
+          <b-form-input v-model="value.nombre"  name="nombre" ></b-form-input>
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Apellidos">
+          <b-form-input  v-model="value.apellidos"  name="apellidos" ></b-form-input>
+    </b-input-group>
+  <b-input-group class="inputgroup" prepend="Nacimiento">
+          <b-form-input v-model="value.dateage"></b-form-input>
+  </b-input-group>
+  <b-input-group class="inputgroup" prepend="Género">
+      <b-form-select placeholder="genero" v-model="value.genero" name="genero" :options="getoptionGenero" />
+  </b-input-group>
+    <b-input-group class="inputgroup" prepend="Teléfono">
+      <b-form-input v-model="value.telefono"  name="telefono"></b-form-input>
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Dirección">
+      <b-form-input v-model="value.direccion"  name="direccion"></b-form-input>
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Email">
+      <b-form-input v-model="value.email" name="email"></b-form-input>
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Ciudad">
+      <b-form-input v-model="value.ciudad" name="ciudad"></b-form-input>
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Estadocivil">
+      <b-form-select v-model="value.estadocivil" name="estadocivil" :options="getoptionEstadoCivil" />
+    </b-input-group>
+    <b-input-group class="inputgroup" prepend="Instruccion">
+      <b-form-select v-model="value.instruccion" name="instruccion" :options="getoptionInstruccion" />
+    </b-input-group>
+     <b-input-group prepend="Ocupación" class="inputgroup" >
+      <b-form-input  v-model="value.ocupacion" name="ocupacion"></b-form-input>
+     </b-input-group>
+
+
+       <b-button @click="addPatienteEvent(value)">Añadir Paciente</b-button>
+  </b-container>
+
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
 export default {
-  name: 'altapaciente',
+  name: "altapaciente",
+  components: {
+  },
   data() {
     return {
-      urlAlta: '/static/api/altapacientes.php',
-      // urlConsulta:'/static/api/consultapacientes.php',
-      paciente: {
-        nombre: '',
-        apellido: '',
-        dateage: '',
-        telefono: '',
-        email: '',
-        ciudad: '',
-      }
+      notediting: "notediting",
+      inputgroup: "inputgroup",
+      editing: "editing",
+      value: {
+        historiaclinica:"",
+        nombre:"",
+        apellidos:"",
+        dateage:"",
+        telefono: "",
+        direccion: "",
+        email: "",
+        ciudad: "",
+        estadocivil: "",
+        instruccion: "",
+        ocupacion: "",
+        genero:""
+      },
+      selected: "null",
 
-    }
+
+    };
+  },
+  computed: {
+    ...mapGetters({
+      getoptionEstadoCivil: "getoptionEstadoCivil",
+      getoptionInstruccion:"getoptionInstruccion",
+      getoptionGenero:"getoptionGenero"
+    })
   },
   methods: {
-    altapacientes: function () {
-      this.$http.post(this.urlAlta, this.paciente).then(function (response) {
-        console.info('bien', response);
-        alert("Se ha dado de alta correctamente l Paciente!");
-        // get body data
-        //this.someData = response.body;
+    ...mapActions({
+      //addNewPatientBBDD: "addNewPatientBBDD"
+    }),
+    ...mapMutations({
+      addPatiente: "addPatiente"
+    }),
+    addPatienteEvent : function(value){
 
-      }, response => {
-        // error callback
-        console.log('mal', response);
-        alert("A ocurrido un error al crear un nuevo paciente! Revise los campos e intentelo más tarde");
-      });
+      // let pacHC = (
+      //   value.apellidos.toLowerCase().trim().replace(/\//g,"").substr(0, 3) +
+      //   value.nombre.toLowerCase().trim().replace(/\//g,"").substr(0, 3) +
+      //   value.ciudad.toLowerCase().trim().replace(/\//g,"").substr(0, 2) +
+      //   value.dateage.toLowerCase().trim().replace(/\//g,"")
+      // )
+
+      // value.historiaclinica = pacHC;
+
+      this.addPatiente(value);
+      this.addNewPatientBBDD();
+    },
+    addNewPatientBBDD: function(){
+
+
+        this.$store.dispatch("addNewPatientBBDD").then(response => {
+
+            this.value= {
+              nombre:"",
+              apellidos:"",
+              dateage:"",
+              telefono: "",
+              direccion: "",
+              email: "",
+              ciudad: "",
+              estadocivil: "",
+              instruccion: "",
+              ocupacion: "",
+              genero:""
+            }
+
+        }, error => {
+            console.error("se fue a la mierda")
+        })
+
     }
+
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-/* ../assets/consultapacientes.php */
+<style scope >
+.input-group-text {
+  width: 130px !important;
+}
 
 
-/* https://randomuser.me/api/?results=50 */
-/* 
-.container {
+.editing {
   background-color: aliceblue;
-} */
-
-.altapaciente {
-  margin: 0 auto;
-  width: 100%;
-  min-width: 200px;
-  /* border: 1px solid grey; */
-  border-radius: 5px;
-  padding: 00px 100px;
-  height: fit-content;
-  /* background-color: rgba(128, 128, 128, 0.14); */
 }
 
-.md-input-container{
-  margin: 4px 0 5px;
-  font-size: 14px;
-}
-
-.md-button{
-  float: right;
-    margin: 30px 0;
-    text-transform: capitalize;
+.notediting {
+  background-color: #fff;
 }
 </style>
+
+
