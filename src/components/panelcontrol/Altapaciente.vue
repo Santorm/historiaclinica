@@ -90,15 +90,6 @@ export default {
     }),
     addPatienteEvent : function(value){
 
-      // let pacHC = (
-      //   value.apellidos.toLowerCase().trim().replace(/\//g,"").substr(0, 3) +
-      //   value.nombre.toLowerCase().trim().replace(/\//g,"").substr(0, 3) +
-      //   value.ciudad.toLowerCase().trim().replace(/\//g,"").substr(0, 2) +
-      //   value.dateage.toLowerCase().trim().replace(/\//g,"")
-      // )
-
-      // value.historiaclinica = pacHC;
-
       this.addPatiente(value);
       this.addNewPatientBBDD();
     },

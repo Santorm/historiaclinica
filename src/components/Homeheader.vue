@@ -4,13 +4,13 @@
     <div class="logo"></div>
     <div class="pacientedata">
       <h1>Historia Clínica LunaPiel</h1>
-      <span>Nro Historia: {{getpatientSelected.historiaclinica}}</span><br>
-      <span>Paciente: {{getpatientSelected.nombre}} {{getpatientSelected.apellidos}}</span><br>
-      <span>Nacimiento: {{getpatientSelected.dateage}}</span><br>
-      <span>Ciudad: {{getpatientSelected.ciudad}}</span><br>
+      <span><b>Nro Historia:</b> {{getpatientSelected.hc}}</span><br>
+      <span><b>Paciente:</b> {{getpatientSelected.nombre}} {{getpatientSelected.apellidos}}</span><br>
+      <span><b>Nacimiento:</b> {{getpatientSelected.dateage}}</span><br>
+      <span><b>Ciudad:</b> {{getpatientSelected.ciudad}}</span><br>
 
 
-      <span>Usuario: {{this.userstate}}</span>
+      <span><b>Usuario:</b> {{this.userstate}}</span>
       <b-button v-if="checklogout" @click="logout">Salir</b-button>
 
 

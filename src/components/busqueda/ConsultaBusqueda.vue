@@ -6,6 +6,7 @@
           <b-btn v-if="filter" @click="filter = ''" variant="outline-success">Borrar</b-btn>
         </b-input-group-append>
   </b-input-group>
+  <!-- <b-button @click="consulta"></b-button> -->
 
   <b-table
   v-if="showtable"
@@ -62,7 +63,7 @@ export default {
           sortable: false
         },
         {
-          key: "historiaclinica",
+          key: "hc",
           label: "#HC",
           sortable: true
         }

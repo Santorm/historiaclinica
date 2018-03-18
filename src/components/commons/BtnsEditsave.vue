@@ -1,9 +1,7 @@
 <template>
 <b-row>
      <b-button @click="editfields(getbtneditSaveState.btnInfo)">{{getbtneditSaveState.btnInfo}}</b-button>
-     <b-button @click="saveChanges" v-if="getbtneditSaveState.btnInfo == 'Cancelar'">Guardar</b-button>
-
-{{$data}}
+     <b-button @click="saveChanges(modulename)" v-if="getbtneditSaveState.btnInfo == 'Cancelar'">Guardar</b-button>
 </b-row>
 
 </template>
@@ -20,6 +18,7 @@ export default {
       // disabled: true,
     }
   },
+  props:["modulename"],
   computed:{
     ...mapGetters({
       getbtneditSaveState: "getbtneditSaveState"
